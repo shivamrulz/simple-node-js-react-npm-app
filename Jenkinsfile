@@ -1,14 +1,23 @@
 pipeline {
     agent {
         docker {
-            image 'node:latest' 
+            image 'node:latest'
             args '-p 3000:3000'
         }
     }
+    environment {
+        CI = 'true' 
+    }
     stages {
-        stage('Build') { 
+        stage('Build') {
             steps {
-                sh 'npm install' 
+                sh 'npm install'
+            }
+        }
+        stage('Test') { 
+            steps {
+                sh 'chmod +x ./jenkins/scripts/test.sh'
+                sh './jenkins/scripts/test.sh' 
             }
         }
     }
